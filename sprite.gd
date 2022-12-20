@@ -20,12 +20,8 @@ var read_data: PackedByteArray
 var write_data: PackedByteArray
 var image_size: Vector2i
 var image_format := Image.FORMAT_RGBA8
-var freqs: PackedFloat64Array;
 
 func _ready() -> void:
-	var file = FileAccess.open("vivaldi-winter-freq.txt", FileAccess.READ)
-	var content = file.get_as_text()
-	freqs = content.split_floats('\n')
 	
 	# We will be using our own RenderingDevice to handle the compute commands
 	rd = RenderingServer.create_local_rendering_device()
@@ -132,7 +128,7 @@ func _ready() -> void:
 	slime_uniform_set = rd.uniform_set_create([read_uniform, slimes_uniform, settings_uniform], slime_shader, 0)	
 
 func _process(delta: float) -> void:
-	# compute(delta)
+	compute(delta)
 	pass
 
 
