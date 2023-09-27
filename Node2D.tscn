@@ -1,16 +1,17 @@
 [gd_scene load_steps=5 format=3 uid="uid://biqaa4dykpvk0"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_meini"]
+[ext_resource type="AudioStream" uid="uid://dcj6n0v80j2d1" path="res://vivaldi-winter.wav" id="2_1jm0v"]
 [ext_resource type="Texture2D" uid="uid://bnq2tbh6cshmh" path="res://icon_1280x720.png" id="3_lf1wf"]
 [ext_resource type="Script" path="res://sprite.gd" id="4_ornel"]
-[ext_resource type="AudioStream" uid="uid://orkhe8314sxc" path="res://vivaldi-winter.mp3" id="4_w3n8i"]
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(-2, 0)
 script = ExtResource("1_meini")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_w3n8i")
+stream = ExtResource("2_1jm0v")
+autoplay = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_right = 40.0

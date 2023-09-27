@@ -20,8 +20,13 @@ var read_data: PackedByteArray
 var write_data: PackedByteArray
 var image_size: Vector2i
 var image_format := Image.FORMAT_RGBA8
+var freqs: PackedFloat64Array;
+var freqs_idx: int = 0;
 
 func _ready() -> void:
+	var file = FileAccess.open("vivaldi-winter-freq.txt", FileAccess.READ)
+	var content = file.get_as_text()
+	freqs = content.split_floats('\n')
 	
 	# We will be using our own RenderingDevice to handle the compute commands
 	rd = RenderingServer.create_local_rendering_device()
@@ -133,6 +138,23 @@ func _process(delta: float) -> void:
 
 
 func compute(delta: float) -> void:
+	var freqs_inc = int(delta * 1000.0);
+	var window = freqs_inc * 10;
+	var ln = min(freqs.size(), freqs_idx + window);
+	var cr_freqs = [];
+	var chaos_level = 0;
+	for i in range(freqs_idx, ln):
+		#cr_freqs.push_back(freqs[i])
+		chaos_level = max(chaos_level, freqs[i])
+	cr_freqs.sort();
+	#var chaos_level = (cr_freqs[freqs_inc / 2] - 0.5) * 2
+	print(chaos_level)
+
+	freqs_idx += freqs_inc;
+	if freqs_idx >= freqs.size():
+		freqs_idx = 0;
+		print("Restarted the freqs idx");
+	
 	rd.texture_update(texture_read, 0, read_data)
 	rd.buffer_update(settings_buffer, 12, 12, PackedFloat32Array([delta, rng.randf_range(0.0, 1.0), rng.randf_range(0.0, 1.0)]).to_byte_array());
 	var compute_list = rd.compute_list_begin()
